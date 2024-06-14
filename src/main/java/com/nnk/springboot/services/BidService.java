@@ -1,6 +1,5 @@
 package com.nnk.springboot.services;
 
-import com.nnk.springboot.controllers.BidListController;
 import com.nnk.springboot.domain.BidList;
 import com.nnk.springboot.repositories.BidListRepository;
 import com.nnk.springboot.utils.RegexValidation;
@@ -8,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -36,11 +34,7 @@ public class BidService {
     }
 
     public BidList getBidById(Integer id) {
-        try {
-            return bidListRepository.findById(id).get();
-        } catch (Exception e) {
-            throw new NoSuchElementException("Bid not found");
-        }
+        return  bidListRepository.findById(id).orElseThrow(NoSuchElementException::new);
     }
 
     public void updateBid(Integer id, BidList bidList) {

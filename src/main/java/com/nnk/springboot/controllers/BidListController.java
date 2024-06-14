@@ -67,6 +67,7 @@ public class BidListController {
             logger.error(e.getMessage());
             return "bidList/update?errorDB";
         }
+        model.addAttribute("bidList", bidService.getBidLists());
         return "redirect:/bidList/list";
     }
 
