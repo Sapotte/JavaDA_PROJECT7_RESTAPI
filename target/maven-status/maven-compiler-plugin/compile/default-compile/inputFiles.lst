@@ -19,3 +19,8 @@ C:\Users\sarah\DepotGit\JavaDA_PROJECT7_RESTAPI\Poseiden-skeleton\src\main\java\
 C:\Users\sarah\DepotGit\JavaDA_PROJECT7_RESTAPI\Poseiden-skeleton\src\main\java\com\nnk\springboot\repositories\RuleNameRepository.java
 C:\Users\sarah\DepotGit\JavaDA_PROJECT7_RESTAPI\Poseiden-skeleton\src\main\java\com\nnk\springboot\repositories\TradeRepository.java
 C:\Users\sarah\DepotGit\JavaDA_PROJECT7_RESTAPI\Poseiden-skeleton\src\main\java\com\nnk\springboot\repositories\UserRepository.java
+C:\Users\sarah\DepotGit\JavaDA_PROJECT7_RESTAPI\Poseiden-skeleton\src\main\java\com\nnk\springboot\services\BidService.java
+C:\Users\sarah\DepotGit\JavaDA_PROJECT7_RESTAPI\Poseiden-skeleton\src\main\java\com\nnk\springboot\services\CurveService.java
+C:\Users\sarah\DepotGit\JavaDA_PROJECT7_RESTAPI\Poseiden-skeleton\src\main\java\com\nnk\springboot\services\CustomUserDetailsService.java
+C:\Users\sarah\DepotGit\JavaDA_PROJECT7_RESTAPI\Poseiden-skeleton\src\main\java\com\nnk\springboot\services\RatingService.java
+C:\Users\sarah\DepotGit\JavaDA_PROJECT7_RESTAPI\Poseiden-skeleton\src\main\java\com\nnk\springboot\utils\RegexValidation.java
