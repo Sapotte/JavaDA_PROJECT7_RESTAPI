@@ -6,8 +6,18 @@
 </head>
 <body>
 <h3> HOME PAGE </h3>
-<p>
-    <a href="/login">Login</a> or create one <a href="/user/list">User management</a>
-</p>
+<p>Log in</p>
+<form th:action="@{/login}" method="post" >
+    <div class="mb-4">
+        <label for="email" class="form-label">Votre email</label>
+        <input type="text" name="email" placeholder="Username" class="form-control" id="email"/>
+    </div>
+    <div class="mb-4 center">
+        <label for="password" class="form-label">Votre mot de passe</label>
+        <input type="password" name="password" placeholder="Password"  class="form-control" id="password"/>
+    </div>
+    <input class="btn btn-primary mb3 center" type="submit" value="Se connecter"/>
+</form>
+<p>or create one <a href="/user/add">User management</a></p>
 </body>
 </html>

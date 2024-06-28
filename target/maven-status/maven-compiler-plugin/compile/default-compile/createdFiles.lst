@@ -1,5 +1,6 @@
 com\nnk\springboot\repositories\RatingRepository.class
 com\nnk\springboot\Application.class
+com\nnk\springboot\configurations\SpringSecurityConfig.class
 com\nnk\springboot\controllers\RatingController.class
 com\nnk\springboot\domain\BidList.class
 com\nnk\springboot\controllers\LoginController.class

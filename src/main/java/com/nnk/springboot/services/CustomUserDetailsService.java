@@ -10,32 +10,30 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
+
     private static final Logger LOGGER = LogManager.getLogger(CustomUserDetailsService.class);
+
     @Autowired
     private UserRepository userRepository;
 
-    /**
-     * Loads a User by their username.
-     *
-     * @param username the username of the User to load
-     * @return the UserDetails object representing the User
-     * @throws UsernameNotFoundException if the User is not found
-     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        var user  = userRepository.findByUsername(username);
+        var user = userRepository.findByUsername(username);
         if (user.isEmpty()) {
+            LOGGER.error("User not found: " + username);
             throw new UsernameNotFoundException("User not found");
         } else {
-            LOGGER.info("Found user: " + user);
+            var foundUser = user.get();
+            LOGGER.info("Found user: " + foundUser);
             return new org.springframework.security.core.userdetails.User(
-                    user.get().getUsername(),
-                    user.get().getPassword(),
-                    List.of(new SimpleGrantedAuthority("ROLE_"+user.get().getRole()))
+                    foundUser.getUsername(),
+                    foundUser.getPassword(),
+                    Collections.singletonList(new SimpleGrantedAuthority(foundUser.getRole()))
             );
         }
     }

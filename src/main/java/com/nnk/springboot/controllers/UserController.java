@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 
@@ -27,8 +28,10 @@ public class UserController {
     }
 
     @GetMapping("/user/add")
-    public String addUser(User bid) {
-        return "user/add";
+    public ModelAndView addUser() {
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("user/add");
+        return mav;
     }
 
     @PostMapping("/user/validate")
