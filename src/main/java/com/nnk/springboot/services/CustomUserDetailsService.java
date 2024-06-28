@@ -11,8 +11,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
-import java.util.List;
-
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
@@ -30,11 +28,13 @@ public class CustomUserDetailsService implements UserDetailsService {
         } else {
             var foundUser = user.get();
             LOGGER.info("Found user: " + foundUser);
-            return new org.springframework.security.core.userdetails.User(
+            var userLogged =  new org.springframework.security.core.userdetails.User(
                     foundUser.getUsername(),
                     foundUser.getPassword(),
                     Collections.singletonList(new SimpleGrantedAuthority(foundUser.getRole()))
             );
+                    LOGGER.info(userLogged);
+                    return userLogged;
         }
     }
 }

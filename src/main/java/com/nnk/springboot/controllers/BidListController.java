@@ -5,6 +5,8 @@ import com.nnk.springboot.services.BidService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,6 +26,8 @@ public class BidListController {
 
     @RequestMapping("/bidList/list")
     public String home(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        model.addAttribute("user", auth.getName());
         model.addAttribute("bidList", bidService.getBidLists());
         return "bidList/list";
     }
@@ -41,7 +45,7 @@ public class BidListController {
         try {
             var newBid = bidService.addBid(bid);
             model.addAttribute("newBid", newBid);
-            return "redirect:bidList/list";
+            return "bidList/list";
         } catch (Exception e) {
             logger.error(e);
             return "bidList/add?errorDB";
