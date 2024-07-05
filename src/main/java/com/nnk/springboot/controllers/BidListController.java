@@ -41,7 +41,7 @@ public class BidListController {
     @PostMapping("/bidList/validate")
     public String validate(@Valid BidList bid, BindingResult result, Model model) {
         if (result.hasErrors()) {
-            return "bidList/add?errorValidation";
+            return "bidList/add";
         }
         try {
             var newBid = bidService.addBid(bid);
@@ -56,7 +56,7 @@ public class BidListController {
     @GetMapping("/bidList/update/{id}")
     public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
         var bid = bidService.getBidById(id);
-        model.addAttribute("bid", bid);
+        model.addAttribute("bidList", bid);
         return "bidList/update";
     }
 
@@ -64,7 +64,7 @@ public class BidListController {
     public String updateBid(@PathVariable("id") Integer id, @Valid BidList bidList,
                              BindingResult result, Model model) {
         if (result.hasErrors()) {
-            return "bidList/update?errorValidation";
+            return "bidList/update";
         }
         try {
             bidService.updateBid(id, bidList);

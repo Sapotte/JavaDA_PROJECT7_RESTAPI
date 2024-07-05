@@ -47,7 +47,7 @@ public class RuleNameController {
     @PostMapping("/ruleName/validate")
     public String validate(@Valid @ModelAttribute("ruleName") RuleName ruleName, BindingResult result, Model model) {
         if(result.hasErrors()) {
-            return "ruleName/add?errorValidation";
+            return "ruleName/add";
         }
         try {
             var newRuleName = ruleNameService.createRuleName(ruleName);
@@ -76,7 +76,7 @@ public class RuleNameController {
     public String updateRuleName(@PathVariable("id") Integer id, @Valid RuleName ruleName,
                              BindingResult result, Model model) {
         if(result.hasErrors()) {
-            return "ruleName/update/{id}?errorValidation";
+            return "ruleName/update/{id}";
         }
         try {
             ruleNameService.updateRuleName(id, ruleName.getName(), ruleName.getDescription(), ruleName.getJson(), ruleName.getTemplate(), ruleName.getSqlStr(), ruleName.getSqlPart());

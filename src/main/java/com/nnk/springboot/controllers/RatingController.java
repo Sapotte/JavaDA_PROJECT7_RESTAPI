@@ -36,7 +36,7 @@ public class RatingController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         try {
             var ratingList = ratingRepository.findAll();
-            model.addAttribute("ratingList", ratingList);
+            model.addAttribute("ratings", ratingList);
             model.addAttribute("username", auth.getName());
             return "rating/list";
         } catch (Exception e) {
@@ -56,7 +56,7 @@ public class RatingController {
     @PostMapping("/rating/validate")
     public String validate(@Valid @ModelAttribute("rating") Rating rating, BindingResult result, Model model) {
         if(result.hasErrors()) {
-            return "curvePoint/add?errorValidation";
+            return "curvePoint/add";
         }
         try {
             var newRating = ratingService.createRating(rating);
@@ -85,7 +85,7 @@ public class RatingController {
     public String updateRating(@PathVariable("id") Integer id, @Valid Rating rating,
                              BindingResult result, Model model) {
         if(result.hasErrors()) {
-            return "curvePoint/update/{id}?errorValidation";
+            return "curvePoint/update/{id}";
         }
         try {
             ratingService.updateRating(id, rating.getMoodysRating(), rating.getSandPRating(), rating.getFitchRating(), rating.getOrderNumber());

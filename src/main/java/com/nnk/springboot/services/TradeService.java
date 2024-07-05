@@ -30,15 +30,11 @@ public class TradeService {
         return tradeRepository.save(curvePoint);
     }
 
-    public void updateTrade(Integer id, String account, String type, Double buyQuantity,
-                            Double sellQuantity, Double buyPrice, Double sellPrice, String benchmark,
-                            Instant tradeDate, String security, String status, String trader, String book,
-                            String dealName, String dealType, String sourceListId, String side) {
+    public void updateTrade(Integer id, String account, String type, Double buyQuantity) {
         if(!tradeRepository.existsById(id)) {
             throw new RuntimeException("Could not find trade with id: " + id);
         }
-        tradeRepository.updateTrade(id, account, type, buyQuantity, sellQuantity, buyPrice, sellPrice, benchmark,
-                tradeDate, security, status, trader, book, Instant.now(), dealName, dealType, sourceListId, side);
+        tradeRepository.updateTrade(id, account, type, buyQuantity, Instant.now());
     }
 
     public void deleteTrade(Integer id) {

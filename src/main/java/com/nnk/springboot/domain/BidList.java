@@ -3,6 +3,8 @@ package com.nnk.springboot.domain;
 import jakarta.persistence.*;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -15,9 +17,13 @@ public class BidList {
     @Column(name = "BidListId", nullable = false)
     private int bidListId;
 
+    @NotNull(message = "This field is required")
+    @Size(max = 30)
     @Column(name = "account", nullable = false, length = 30)
     private String account;
 
+    @NotNull(message = "This field is required")
+    @Size(max = 30)
     @Column(name = "type", nullable = false, length = 30)
     private String type;
 
