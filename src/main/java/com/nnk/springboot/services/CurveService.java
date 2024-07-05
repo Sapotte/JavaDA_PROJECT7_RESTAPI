@@ -24,11 +24,11 @@ public class CurveService {
         return curvePointRepository.save(curvePoint);
     }
 
-    public void updateCurvePoint(Integer id, Integer curveId, Double term, Double value) {
+    public void updateCurvePoint(Integer id, Double term, Double value) {
         if(!curvePointRepository.existsById(id)) {
             throw new RuntimeException("Could not find curve point with id: " + id);
         }
-        curvePointRepository.updateCurvePoint(id, curveId, term, value);
+        curvePointRepository.updateCurvePoint(id, term, value);
     }
 
     public void deleteCurvePoint(Integer id) {

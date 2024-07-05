@@ -69,7 +69,7 @@ public class CurveController {
     public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
             var curvePoint = curveService.findCurvePointById(id);
             try {
-                model.addAttribute("curvePoints", curvePoint);
+                model.addAttribute("curvePoint", curvePoint);
                 return "curvePoint/update";
             } catch (Exception e) {
                 logger.error(e.getMessage());
@@ -85,11 +85,11 @@ public class CurveController {
             return "curvePoint/update/{id}";
         }
         try {
-            curveService.updateCurvePoint(id, curvePoint.getCurveId(), curvePoint.getTerm(), curvePoint.getValue());
+            curveService.updateCurvePoint(id, curvePoint.getTerm(), curvePoint.getValue());
             return "redirect:/curvePoint/list";
         } catch (Exception e) {
             result.reject("error", e.getMessage());
-            return "curvePoint/update/{id}?error";
+            return "curvePoint/update/{id}";
         }
     }
 
