@@ -86,5 +86,4 @@ public class CurvePoint {
     public void setCurveId(Integer curveId) {
         this.curveId = curveId;
     }
-    // TODO: Map columns in data table CURVEPOINT with corresponding java fields
 }

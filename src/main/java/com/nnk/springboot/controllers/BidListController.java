@@ -28,7 +28,8 @@ public class BidListController {
     public String home(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         model.addAttribute("user", auth.getName());
-        model.addAttribute("bidList", bidService.getBidLists());
+
+        model.addAttribute("bidLists", bidService.getBidLists());
         return "bidList/list";
     }
 

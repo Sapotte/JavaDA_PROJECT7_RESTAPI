@@ -6,13 +6,13 @@ import com.nnk.springboot.services.CurveService;
 import com.nnk.springboot.services.RatingService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 
@@ -33,9 +33,11 @@ public class RatingController {
     @RequestMapping("/rating/list")
     public String home(Model model)
     {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         try {
             var ratingList = ratingRepository.findAll();
             model.addAttribute("ratingList", ratingList);
+            model.addAttribute("username", auth.getName());
             return "rating/list";
         } catch (Exception e) {
             logger.error(e);
@@ -45,12 +47,14 @@ public class RatingController {
     }
 
     @GetMapping("/rating/add")
-    public String addRatingForm(Rating rating) {
-        return "rating/add";
+    public ModelAndView addRatingForm(Rating rating) {
+        ModelAndView mav = new ModelAndView("rating/add");
+        mav.addObject("rating", rating);
+        return mav;
     }
 
     @PostMapping("/rating/validate")
-    public String validate(@Valid Rating rating, BindingResult result, Model model) {
+    public String validate(@Valid @ModelAttribute("rating") Rating rating, BindingResult result, Model model) {
         if(result.hasErrors()) {
             return "curvePoint/add?errorValidation";
         }
