@@ -56,15 +56,14 @@ public class RatingController {
     @PostMapping("/rating/validate")
     public String validate(@Valid @ModelAttribute("rating") Rating rating, BindingResult result, Model model) {
         if(result.hasErrors()) {
-            return "curvePoint/add";
+            return "rating/add";
         }
         try {
-            var newRating = ratingService.createRating(rating);
-            model.addAttribute("newCurvePoint", newRating);
-            return "rating/add";
+            ratingService.createRating(rating);
+            return "redirect:/rating/list";
         } catch (Exception e) {
             result.reject("error", "Error saving new curve point");
-            return "rating/add?error";
+            return "rating/add";
         }
     }
 
@@ -77,7 +76,7 @@ public class RatingController {
         } else {
            logger.error("Rating with id " + id + " not found");
            model.addAttribute("message", "Rating not found");
-            return "rating/list?error";
+            return "rating/list";
         }
     }
 

@@ -19,7 +19,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
-public class SpringSecurityConfig extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {
+public class SpringSecurityConfig extends SecurityConfigurerAdapter {
 
     @Autowired
     private CustomUserDetailsService usersService;
@@ -32,8 +32,16 @@ public class SpringSecurityConfig extends SecurityConfigurerAdapter<DefaultSecur
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                .authorizeRequests(auth -> auth
+                        .requestMatchers("/user/**","/admin/home").hasAnyRole("ADMIN")
+                        .anyRequest().authenticated()
+                )
+                .httpBasic(Customizer.withDefaults())
                 .formLogin(form -> form
-                        .defaultSuccessUrl("/user/add"));
+                        .defaultSuccessUrl("/app/home", true))
+                .logout(logout -> logout.clearAuthentication(true)
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID"));
         return http.build();
     }
 

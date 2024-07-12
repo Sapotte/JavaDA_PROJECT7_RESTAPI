@@ -1,7 +1,6 @@
 package com.nnk.springboot.domain;
 
 import jakarta.persistence.*;
-import org.hibernate.type.descriptor.jdbc.TinyIntJdbcType;
 
 import java.time.Instant;
 
@@ -10,7 +9,7 @@ import java.time.Instant;
 public class Trade {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    @Column(name = "TradeId", nullable = false)
+    @Column(name = "tradeId", nullable = false)
     private int tradeId;
 
     @Column(name = "account", nullable = false, length = 30)

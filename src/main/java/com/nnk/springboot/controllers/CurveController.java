@@ -60,7 +60,7 @@ public class CurveController {
             return "curvePoint/list";
         } catch (Exception e) {
             result.reject("error", "Error saving new curve point");
-            return "curvePoint/add?error";
+            return "curvePoint/add";
         }
 
     }

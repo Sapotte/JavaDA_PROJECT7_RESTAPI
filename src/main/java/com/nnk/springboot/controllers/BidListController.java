@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 
@@ -25,12 +26,12 @@ public class BidListController {
     BidService bidService;
 
     @RequestMapping("/bidList/list")
-    public String home(Model model) {
+    public ModelAndView home() {
+        ModelAndView mav = new ModelAndView("bidList/list");
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        model.addAttribute("user", auth.getName());
-
-        model.addAttribute("bidLists", bidService.getBidLists());
-        return "bidList/list";
+        mav.addObject("user", auth.getName());
+        mav.addObject("bidLists", bidService.getBidLists());
+        return mav;
     }
 
     @GetMapping("/bidList/add")

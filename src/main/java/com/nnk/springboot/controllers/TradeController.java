@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 
@@ -33,34 +34,52 @@ public class TradeController {
     }
 
     @GetMapping("/trade/add")
-    public String addUser(Trade bid) {
-        return "trade/add";
+    public ModelAndView addUser(Trade trade) {
+        ModelAndView mav = new ModelAndView("trade/add");
+        mav.addObject("trade", trade);
+        return mav;
     }
 
     @PostMapping("/trade/validate")
     public String validate(@Valid Trade trade, BindingResult result, Model model) {
         if(result.hasErrors()) {
-            return "trade/add?erroValidation";
+            return "trade/add";
         }
-        return "trade/add";
+        try {
+            tradeService.createTrade(trade);
+            return "redirect:/trade/list";
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @GetMapping("/trade/update/{id}")
     public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
-        // TODO: get Trade by Id and to model then show to the form
+        model.addAttribute("trade", tradeService.findTradeById(id));
         return "trade/update";
     }
 
     @PostMapping("/trade/update/{id}")
     public String updateTrade(@PathVariable("id") Integer id, @Valid Trade trade,
                              BindingResult result, Model model) {
-        // TODO: check required fields, if valid call service to update Trade and return Trade list
-        return "redirect:/trade/list";
+        if(result.hasErrors()) {
+            return "trade/update";
+        }
+        try {
+            tradeService.updateTrade(id, trade.getAccount(), trade.getType(), trade.getBuyQuantity());
+            return "redirect:/trade/list";
+        }catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @GetMapping("/trade/delete/{id}")
     public String deleteTrade(@PathVariable("id") Integer id, Model model) {
-        // TODO: Find Trade by Id and delete the Trade, return to Trade list
+        try {
+            tradeService.deleteTrade(id);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         return "redirect:/trade/list";
     }
 }

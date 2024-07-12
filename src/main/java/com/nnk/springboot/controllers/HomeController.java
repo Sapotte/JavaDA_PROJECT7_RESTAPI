@@ -20,10 +20,10 @@ public class HomeController
 	@RequestMapping("/admin/home")
 	public String adminHome(Model model)
 	{
-		return "redirect:/bidList/list";
+		return "redirect:/home";
 	}
 
-	@GetMapping("error")
+	@GetMapping("/error")
 	public String error(Model model) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String username = auth != null ? auth.getName() : "Anonymous";
