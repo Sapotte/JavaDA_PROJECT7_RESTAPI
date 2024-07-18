@@ -1,0 +1,104 @@
+package com.nnk.springboot.controllers;
+
+import com.nnk.springboot.domain.BidList;
+import com.nnk.springboot.services.BidService;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
+import org.springframework.security.authentication.TestingAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.when;
+
+@ExtendWith(MockitoExtension.class)
+class BidListControllerTest {
+    @InjectMocks
+    BidListController bidListController;
+
+    @Mock
+    BidService bidService;
+
+    private MockMvc mockMvc;
+
+    @BeforeEach
+    void setUp() throws Exception {
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        Authentication auth = new TestingAuthenticationToken("admin", "password", authorities);
+        SecurityContextHolder.getContext().setAuthentication(auth);
+        mockMvc = MockMvcBuilders.standaloneSetup(bidListController).build();
+    }
+
+    @Test
+    void home() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/bidList/list"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.view().name("bidList/list"));
+        Mockito.verify(bidService, Mockito.times(1)).getBidLists();
+    }
+
+    @Test
+    void addBidForm() throws Exception {
+        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(bidListController).build();
+        mockMvc.perform(MockMvcRequestBuilders.get("/bidList/add"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.view().name("bidList/add"));
+    }
+
+    @Test
+    void validateSuccess() throws Exception {
+        BidList newBid = new BidList("accountNew", "typeNew", 10.0);
+        when(bidService.addBid(any())).thenReturn(newBid);
+        mockMvc.perform(MockMvcRequestBuilders.post("/bidList/validate")
+                .flashAttr("bidList", newBid))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.view().name("bidList/list"));
+        Mockito.verify(bidService, Mockito.times(1)).addBid(any());
+    }
+
+    @Test
+    void validateFailure() throws Exception {
+        BidList invalidBid = new BidList("", "", null);
+        when(bidService.addBid(any())).thenThrow(InvalidDataAccessApiUsageException.class);
+        mockMvc.perform(MockMvcRequestBuilders.post("/bidList/validate")
+                .flashAttr("bidList", invalidBid))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.view().name("bidList/add?errorDB"));
+        Mockito.verify(bidService, Mockito.times(1)).addBid(any());
+    }
+
+    @Test
+    void updateBid() throws Exception {
+        BidList updatedBid = new BidList("accountUpdate", "typeUpdate", 20.0);
+        mockMvc.perform(MockMvcRequestBuilders.post("/bidList/update/1", updatedBid))
+                .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
+                .andExpect(MockMvcResultMatchers.redirectedUrl("/bidList/list"));
+        Mockito.verify(bidService, Mockito.times(1)).updateBid(anyInt(), any());
+    }
+
+    @Test
+    void deleteBid() throws Exception {
+        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(bidListController).build();
+        Mockito.doNothing().when(bidService).deleteBid(anyInt());
+        mockMvc.perform(MockMvcRequestBuilders.get("/bidList/delete/1"))
+                .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
+                .andExpect(MockMvcResultMatchers.redirectedUrl("/bidList/list"));
+    }
+}

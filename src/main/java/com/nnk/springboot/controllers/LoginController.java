@@ -25,6 +25,7 @@ public class LoginController {
     @GetMapping("/home")
     public ModelAndView home() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        // redirect to admin page if user has admin role
         if(auth != null && auth.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
             ModelAndView modelAndView = new ModelAndView("home");
             return modelAndView;
@@ -32,6 +33,7 @@ public class LoginController {
             return bidListController.home();
         }
     }
+
 
     @GetMapping("secure/article-details")
     public ModelAndView getAllUserArticles() {
