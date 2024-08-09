@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -41,6 +42,16 @@ public class UserController {
         result = RegexValidation.addErrorIfPasswordNotValid(result, user.getPassword());
         if (result.hasErrors()) {
             return "user/add";
+        }
+        try {
+            userService.addUser(user);
+        } catch (Exception e) {
+            if( e instanceof IllegalArgumentException) {
+                result.addError(new FieldError("user", "username", "This userName already exists"));
+                return "user/add";
+            } else {
+                return "user/add?error";
+            }
         }
         userService.addUser(user);
         model.addAttribute("users", userRepository.findAll());

@@ -18,6 +18,10 @@ public class UserService {
      * @param user the user object to be added to the repository
      */
     public void addUser(User user) {
+        User existingUser = userRepository.findByUsername(user.getUsername()).orElse(null);
+        if (existingUser != null) {
+            throw new IllegalArgumentException("Username already exists");
+        }
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         user.setPassword(encoder.encode(user.getPassword()));
         userRepository.save(user);
