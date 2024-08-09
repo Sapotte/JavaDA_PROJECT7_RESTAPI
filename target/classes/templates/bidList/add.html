@@ -36,8 +36,61 @@
 					<p class="text-danger" th:if="${#fields.hasErrors('bidQuantity')}" th:errors="*{bidQuantity}"></p>
 				</div>
 			</div>
-
-
+			<div class="form-group">
+				<label for="askQuantity" class="col-sm-2 control-label">Ask Quantity</label>
+				<div class="col-sm-10">
+					<input type="number" th:field="*{askQuantity}" id="askQuantity" placeholder="Ask Quantity" class="col-4">
+					<p class="text-danger" th:if="${#fields.hasErrors('askQuantity')}" th:errors="*{askQuantity}"></p>
+				</div>
+			</div><div class="form-group">
+				<label for="bid" class="col-sm-2 control-label">Bid</label>
+				<div class="col-sm-10">
+					<input type="number" th:field="*{bid}" id="bid" placeholder="Bid" class="col-4">
+					<p class="text-danger" th:if="${#fields.hasErrors('bid')}" th:errors="*{bid}"></p>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="ask" class="col-sm-2 control-label">Ask</label>
+				<div class="col-sm-10">
+					<input type="number" th:field="*{ask}" id="ask" placeholder="Ask" class="col-4">
+					<p class="text-danger" th:if="${#fields.hasErrors('ask')}" th:errors="*{ask}"></p>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="ask" class="col-sm-2 control-label">BenchMark</label>
+				<div class="col-sm-10">
+					<input type="text" th:field="*{benchmark}" id="benchmark" placeholder="Benchmark" class="col-4">
+					<p class="text-danger" th:if="${#fields.hasErrors('benchmark')}" th:errors="*{benchmark}"></p>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="bidListDate" class="col-sm-2 control-label">Bid list date</label>
+				<div class="col-sm-10">
+					<input type="date" th:field="*{bidListDate}" id="bidListDate" placeholder="Bid list date" class="col-4">
+					<p class="text-danger" th:if="${#fields.hasErrors('bidListDate')}" th:errors="*{bidListDate}"></p>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="commentary" class="col-sm-2 control-label">Commentary</label>
+				<div class="col-sm-10">
+					<input type="text" th:field="*{commentary}" id="commentary" placeholder="Commentary" class="col-4">
+					<p class="text-danger" th:if="${#fields.hasErrors('commentary')}" th:errors="*{commentary}"></p>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="trader" class="col-sm-2 control-label">Trader</label>
+				<div class="col-sm-10">
+					<input type="date" th:field="*{trader}" id="trader" placeholder="Trader" class="col-4">
+					<p class="text-danger" th:if="${#fields.hasErrors('trader')}" th:errors="*{trader}"></p>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="book" class="col-sm-2 control-label">Book</label>
+				<div class="col-sm-10">
+					<input type="date" th:field="*{book}" id="book" placeholder="Book" class="col-4">
+					<p class="text-danger" th:if="${#fields.hasErrors('book')}" th:errors="*{book}"></p>
+				</div>
+			</div>
 			<div class="form-group">
 				<div class="col-sm-12">
 					<a class="btn btn-danger btn-sm" href="/bidList/list">Cancel</a>

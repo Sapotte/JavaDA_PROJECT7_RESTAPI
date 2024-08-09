@@ -29,20 +29,23 @@ class LoginControllerTest {
     @Mock
     BidListController bidListController;
 
+    @Mock
+    UserController userController;
+
     @Test
-    void home_as_admin() {
+    void homeAsAdmin() {
       List<GrantedAuthority> authorities = new ArrayList<>();
       authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
       Authentication auth = new TestingAuthenticationToken("admin", "password", authorities);
       SecurityContextHolder.getContext().setAuthentication(auth);
 
-      ModelAndView mav = loginController.home();
+      loginController.home();
 
-      assertEquals("home", mav.getViewName());
+      verify(userController, times(1)).home();
     }
 
     @Test
-    void home_as_user() {
+    void homeAsUser() {
       Authentication auth = new TestingAuthenticationToken("user", "password", List.of(new SimpleGrantedAuthority("ROLE_USER")));
       SecurityContextHolder.getContext().setAuthentication(auth);
 

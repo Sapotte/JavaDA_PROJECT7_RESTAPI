@@ -3,11 +3,9 @@ package com.nnk.springboot.controllers;
 import com.nnk.springboot.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -22,13 +20,15 @@ public class LoginController {
     @Autowired
     private BidListController bidListController;
 
+    @Autowired
+    private UserController userController;
+
     @GetMapping("/home")
     public ModelAndView home() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         // redirect to admin page if user has admin role
         if(auth != null && auth.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
-            ModelAndView modelAndView = new ModelAndView("home");
-            return modelAndView;
+            return userController.home();
         } else {
             return bidListController.home();
         }

@@ -12,7 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 @Controller
 public class CurveController {
@@ -57,10 +57,10 @@ public class CurveController {
         try {
             var newCurvePoint = curveService.createCurvePoint(curvePoint);
             model.addAttribute("newCurvePoint", newCurvePoint);
-            return "curvePoint/list";
+            return "redirect:curvePoint/list";
         } catch (Exception e) {
             result.reject("error", "Error saving new curve point");
-            return "curvePoint/add";
+            return "curvePoint/add?error";
         }
 
     }
@@ -78,7 +78,7 @@ public class CurveController {
         }
     }
 
-    @PostMapping("/curvePoint/update/{id}")
+    @PutMapping("/curvePoint/update/{id}")
     public String updateCurve(@PathVariable("id") Integer id, @Valid CurvePoint curvePoint,
                               BindingResult result) {
         if(result.hasErrors()) {

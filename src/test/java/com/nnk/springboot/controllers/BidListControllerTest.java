@@ -25,7 +25,7 @@ import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class BidListControllerTest {
@@ -38,7 +38,7 @@ class BidListControllerTest {
     private MockMvc mockMvc;
 
     @BeforeEach
-    void setUp() throws Exception {
+    void setUp() {
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
         Authentication auth = new TestingAuthenticationToken("admin", "password", authorities);
@@ -51,7 +51,7 @@ class BidListControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/bidList/list"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.view().name("bidList/list"));
-        Mockito.verify(bidService, Mockito.times(1)).getBidLists();
+        verify(bidService, Mockito.times(1)).getBidLists();
     }
 
     @Test
@@ -67,10 +67,10 @@ class BidListControllerTest {
         BidList newBid = new BidList("accountNew", "typeNew", 10.0);
         when(bidService.addBid(any())).thenReturn(newBid);
         mockMvc.perform(MockMvcRequestBuilders.post("/bidList/validate")
-                .flashAttr("bidList", newBid))
+                        .flashAttr("bidList", newBid))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.view().name("bidList/list"));
-        Mockito.verify(bidService, Mockito.times(1)).addBid(any());
+        verify(bidService, Mockito.times(1)).addBid(any());
     }
 
     @Test
@@ -78,27 +78,39 @@ class BidListControllerTest {
         BidList invalidBid = new BidList("", "", null);
         when(bidService.addBid(any())).thenThrow(InvalidDataAccessApiUsageException.class);
         mockMvc.perform(MockMvcRequestBuilders.post("/bidList/validate")
-                .flashAttr("bidList", invalidBid))
+                        .flashAttr("bidList", invalidBid))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.view().name("bidList/add?errorDB"));
-        Mockito.verify(bidService, Mockito.times(1)).addBid(any());
-    }
-
-    @Test
-    void updateBid() throws Exception {
-        BidList updatedBid = new BidList("accountUpdate", "typeUpdate", 20.0);
-        mockMvc.perform(MockMvcRequestBuilders.post("/bidList/update/1", updatedBid))
-                .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
-                .andExpect(MockMvcResultMatchers.redirectedUrl("/bidList/list"));
-        Mockito.verify(bidService, Mockito.times(1)).updateBid(anyInt(), any());
+        verify(bidService, Mockito.times(1)).addBid(any());
     }
 
     @Test
     void deleteBid() throws Exception {
         MockMvc mockMvc = MockMvcBuilders.standaloneSetup(bidListController).build();
-        Mockito.doNothing().when(bidService).deleteBid(anyInt());
+        doNothing().when(bidService).deleteBid(anyInt());
         mockMvc.perform(MockMvcRequestBuilders.get("/bidList/delete/1"))
                 .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
                 .andExpect(MockMvcResultMatchers.redirectedUrl("/bidList/list"));
+    }
+
+    @Test
+    void showUpdateForm() throws Exception {
+        BidList expectedBid = new BidList("accountUpdate", "typeUpdate", 20.0);
+        when(bidService.getBidById(anyInt())).thenReturn(expectedBid);
+        mockMvc.perform(MockMvcRequestBuilders.get("/bidList/update/1"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.view().name("bidList/update"))
+                .andExpect(MockMvcResultMatchers.model().attribute("bidList", expectedBid));
+    }
+
+    @Test
+    void updateBidSuccess() throws Exception {
+        BidList updatedBid = new BidList("accountUpdated", "typeUpdated", 30.0);
+        doNothing().when(bidService).updateBid(anyInt(), any());
+        mockMvc.perform(MockMvcRequestBuilders.post("/bidList/update/1")
+                .flashAttr("bidList", updatedBid))
+                .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
+                .andExpect(MockMvcResultMatchers.redirectedUrl("/bidList/list"));
+        verify(bidService, times(1)).updateBid(anyInt(), any());
     }
 }

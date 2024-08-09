@@ -1,12 +1,11 @@
 package com.nnk.springboot.domain;
 
 import jakarta.persistence.*;
-import javax.validation.constraints.Digits;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import java.sql.Date;
-import java.sql.Timestamp;
+import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+
 import java.time.Instant;
 
 @Entity
@@ -28,24 +27,30 @@ public class BidList {
     private String type;
 
     @Column(name = "bidQuantity")
+    @Digits(integer = 12, fraction = 0, message = "Must be an integer")
     private Double bidQuantity;
 
     @Column(name = "askQuantity")
+    @Digits(integer = 12, fraction = 0, message = "Must be an integer")
     private Double askQuantity;
 
     @Column(name = "bid")
+    @Digits(integer = 12, fraction = 0, message = "Invalid number")
     private Double bid;
 
     @Column(name = "ask")
+    @Digits(integer = 12, fraction = 0, message = "Invalid number")
     private Double ask;
 
     @Column(name = "benchmark", length = 125)
+    @Pattern(regexp = "^[a-zA-Z]*$", message = "Must contain only alphabetic characters")
     private String benchmark;
 
     @Column(name = "bidListDate")
     private Instant bidListDate;
 
     @Column(name = "commentary", length = 125)
+    @Pattern(regexp = "^[a-zA-Z]*$", message = "Must contain only alphabetic characters")
     private String commentary;
 
     @Column(name = "security", length = 125)
@@ -55,9 +60,11 @@ public class BidList {
     private String status;
 
     @Column(name = "trader", length = 125)
+    @Pattern(regexp = "^[a-zA-Z]*$", message = "Must contain only alphabetic characters")
     private String trader;
 
     @Column(name = "book", length = 125)
+    @Pattern(regexp = "^[a-zA-Z]*$", message = "Must contain only alphabetic characters")
     private String book;
 
     @Column(name = "creationName", length = 125)

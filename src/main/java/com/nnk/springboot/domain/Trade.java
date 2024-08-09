@@ -1,6 +1,7 @@
 package com.nnk.springboot.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Digits;
 
 import java.time.Instant;
 
@@ -19,15 +20,19 @@ public class Trade {
     private String type;
 
     @Column(name = "buyQuantity")
+    @Digits(integer = 10, fraction = 0, message = "Must be an integer")
     private Double buyQuantity;
 
     @Column(name = "sellQuantity")
+    @Digits(integer = 10, fraction = 0, message = "Must be an integer")
     private Double sellQuantity;
 
     @Column(name = "buyPrice")
+    @Digits(integer = 5, fraction = 0, message = "Invalid number")
     private Double buyPrice;
 
     @Column(name = "sellPrice")
+    @Digits(integer = 5, fraction = 0, message = "Invalid number")
     private Double sellPrice;
 
     @Column(name = "tradeDate")

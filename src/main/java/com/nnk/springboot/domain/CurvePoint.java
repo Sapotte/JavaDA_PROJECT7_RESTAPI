@@ -2,8 +2,8 @@ package com.nnk.springboot.domain;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Digits;
 
-import javax.validation.constraints.NotNull;
 import java.time.Instant;
 
 @Entity
@@ -15,15 +15,18 @@ public class CurvePoint {
     private int id;
 
     @Column(name = "CurveId")
+    @Digits(integer = 10, fraction = 0, message = "Must be an integer")
     private Integer curveId;
 
     @Column(name = "asOfDate")
     private Instant asOfDate;
 
     @Column(name = "term")
+    @Digits(integer = 5, fraction = 0, message = "Invalid number")
     private Double term;
 
     @Column(name = "value")
+    @Digits(integer = 5, fraction = 0, message = "Invalid number")
     private Double value;
 
     @Column(name = "creationDate")
