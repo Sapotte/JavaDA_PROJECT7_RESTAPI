@@ -84,7 +84,7 @@ public class RatingController {
     public String updateRating(@PathVariable("id") Integer id, @Valid Rating rating,
                              BindingResult result, Model model) {
         if(result.hasErrors()) {
-            return "curvePoint/update/{id}";
+            return "rating/update/{id}";
         }
         try {
             ratingService.updateRating(id, rating.getMoodysRating(), rating.getSandPRating(), rating.getFitchRating(), rating.getOrderNumber());
@@ -99,7 +99,7 @@ public class RatingController {
     @GetMapping("/rating/delete/{id}")
     public String deleteRating(@PathVariable("id") Integer id, Model model) {
         try {
-            curveService.deleteCurvePoint(id);
+            ratingService.deleteRating(id);
             return "redirect:/rating/list";
         } catch (Exception e) {
             logger.error(e);

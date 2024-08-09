@@ -27,6 +27,16 @@ public class UserService {
         userRepository.save(user);
     }
 
+    /**
+     * Updates an existing user in the user repository.
+     * If the password is blank or null, the method retains the user's old password.
+     * If the password is provided, it is encrypted using the BCryptPasswordEncoder
+     * before saving to the repository.
+     *
+     * @param user the updated user object
+     * @param id   the id of the user to be updated
+     * @throws IllegalArgumentException if the user id is invalid
+     */
     public void updateUser(User user, int id) {
         User oldUser = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
         if(user.getPassword().isBlank() || user.getPassword() == null) {
@@ -36,5 +46,6 @@ public class UserService {
             user.setPassword(encoder.encode(user.getPassword()));
         }
         user.setId(id);
+        userRepository.save(user);
     }
 }

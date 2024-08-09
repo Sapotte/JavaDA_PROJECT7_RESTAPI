@@ -52,7 +52,7 @@ public class RuleNameController {
         try {
             var newRuleName = ruleNameService.createRuleName(ruleName);
             model.addAttribute("newRuleName", newRuleName);
-            return "ruleName/list";
+            return "redirect:/ruleName/list";
         } catch (Exception e) {
             result.reject("error", "Error saving new curve point");
             return "ruleName/add?error";

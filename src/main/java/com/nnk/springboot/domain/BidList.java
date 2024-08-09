@@ -7,6 +7,8 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 
 @Entity
 @Table(name = "bidlist")
@@ -43,14 +45,14 @@ public class BidList {
     private Double ask;
 
     @Column(name = "benchmark", length = 125)
-    @Pattern(regexp = "^[a-zA-Z]*$", message = "Must contain only alphabetic characters")
+    @Pattern(regexp = "^[a-zA-Z\\s]*$", message = "Must contain only alphabetic characters")
     private String benchmark;
 
     @Column(name = "bidListDate")
     private Instant bidListDate;
 
     @Column(name = "commentary", length = 125)
-    @Pattern(regexp = "^[a-zA-Z]*$", message = "Must contain only alphabetic characters")
+    @Pattern(regexp = "^[a-zA-Z\\s]*$", message = "Must contain only alphabetic characters")
     private String commentary;
 
     @Column(name = "security", length = 125)
@@ -275,5 +277,4 @@ public class BidList {
     public void setAccount(String account) {
         this.account = account;
     }
-    // TODO: Map columns in data table BIDLIST with corresponding java fields
 }

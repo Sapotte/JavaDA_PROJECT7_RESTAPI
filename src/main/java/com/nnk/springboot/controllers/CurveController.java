@@ -57,7 +57,7 @@ public class CurveController {
         try {
             var newCurvePoint = curveService.createCurvePoint(curvePoint);
             model.addAttribute("newCurvePoint", newCurvePoint);
-            return "redirect:curvePoint/list";
+            return "redirect:/curvePoint/list";
         } catch (Exception e) {
             result.reject("error", "Error saving new curve point");
             return "curvePoint/add?error";
@@ -78,7 +78,7 @@ public class CurveController {
         }
     }
 
-    @PutMapping("/curvePoint/update/{id}")
+    @PostMapping("/curvePoint/update/{id}")
     public String updateCurve(@PathVariable("id") Integer id, @Valid CurvePoint curvePoint,
                               BindingResult result) {
         if(result.hasErrors()) {
