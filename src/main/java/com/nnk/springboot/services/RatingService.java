@@ -7,8 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class RatingService {
 
@@ -23,7 +21,7 @@ public class RatingService {
 
     public void updateRating(Integer id, String moodysRating, String sandPRating, String fitchRating, Integer orderNumber) {
         if(!ratingRepository.existsById(id)) {
-            LOG.error("Rating with id " + id + " does not exist");
+            LOG.error("Update rating failed");
             throw new RuntimeException("Could not find rating with id: " + id);
         }
         ratingRepository.updateRating(id, moodysRating, sandPRating, fitchRating, orderNumber);
@@ -32,7 +30,7 @@ public class RatingService {
 
     public void deleteRating(Integer id) {
         if(!ratingRepository.existsById(id)) {
-            LOG.error("Rating with id " + id + " does not exist");
+            LOG.error("Delete rating failed");
             throw new RuntimeException("Could not find rating with id: " + id);
         }
         ratingRepository.deleteById(id);

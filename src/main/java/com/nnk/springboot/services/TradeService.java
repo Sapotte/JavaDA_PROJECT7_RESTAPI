@@ -6,10 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.sql.Timestamp;
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -32,7 +29,7 @@ public class TradeService {
 
     public void updateTrade(Integer id, String account, String type, Double buyQuantity) {
         if(!tradeRepository.existsById(id)) {
-            LOG.error("Could not find trade with id: " + id);
+            LOG.error("Update Trade failed");
             throw new RuntimeException("Could not find trade with id: " + id);
         }
         tradeRepository.updateTrade(id, account, type, buyQuantity, Instant.now());
@@ -41,7 +38,7 @@ public class TradeService {
 
     public void deleteTrade(Integer id) {
         if(!tradeRepository.existsById(id)) {
-            LOG.error("Could not find trade with id: " + id);
+            LOG.error("Delete Trade failed");
             throw new RuntimeException("Could not find trade with id: " + id);
         }
         tradeRepository.deleteById(id);

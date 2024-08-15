@@ -1,7 +1,6 @@
 package com.nnk.springboot.controllers;
 
 import com.nnk.springboot.domain.RuleName;
-import com.nnk.springboot.repositories.RuleNameRepository;
 import com.nnk.springboot.services.RuleNameService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -98,7 +97,7 @@ public class RuleNameControllerTest {
         // Arrange
         RuleName ruleName = new RuleName();
         Model model = new BindingAwareModelMap();
-        Integer id = 1;
+        int id = 1;
 
         Mockito.when(ruleNameService.findRuleNameById(id)).thenReturn(ruleName);
 

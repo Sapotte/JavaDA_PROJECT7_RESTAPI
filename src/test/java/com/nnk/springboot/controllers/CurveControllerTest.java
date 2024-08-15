@@ -23,10 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest
@@ -56,7 +53,7 @@ public class CurveControllerTest {
         //Assert
         assertEquals("curvePoint/add", mav.getViewName());
         assertTrue(mav.getModel().containsKey("curvePoint"));
-        assertTrue(mav.getModel().get("curvePoint") instanceof CurvePoint);
+        assertInstanceOf(CurvePoint.class, mav.getModel().get("curvePoint"));
     }
 
     @Test

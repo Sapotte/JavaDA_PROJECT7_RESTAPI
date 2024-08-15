@@ -30,7 +30,7 @@ public class CurveService {
 
     public void updateCurvePoint(Integer id, Double term, Double value) {
         if(!curvePointRepository.existsById(id)) {
-            LOG.error("Could not find curve point with id: " + id);
+            LOG.error("Update curvePoint failed");
             throw new RuntimeException("Could not find curve point with id: " + id);
         }
         curvePointRepository.updateCurvePoint(id, term, value);
@@ -39,7 +39,7 @@ public class CurveService {
 
     public void deleteCurvePoint(Integer id) {
         if(!curvePointRepository.existsById(id)) {
-            LOG.error("Could not find curve point with id: " + id);
+            LOG.error("Delete curve point failed");
             throw new RuntimeException("Could not find curve point with id: " + id);
         }
         curvePointRepository.deleteById(id);

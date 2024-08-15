@@ -1,7 +1,6 @@
 package com.nnk.springboot.services;
 
 import com.nnk.springboot.domain.RuleName;
-import com.nnk.springboot.domain.RuleName;
 import com.nnk.springboot.repositories.RuleNameRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +30,7 @@ public class RuleNameService {
 
     public void updateRuleName(Integer id, String name, String description, String json,  String template, String sqlStr, String sqlPart) {
         if(!ruleNameRepository.existsById(id)) {
-            LOG.error("Could not find rule name with id: " + id);
+            LOG.error("Update Rulename failed");
             throw new RuntimeException("Could not find curve point with id: " + id);
         }
         ruleNameRepository.updateRuleName(id, name, description, json, template, sqlStr, sqlPart);
@@ -40,7 +39,7 @@ public class RuleNameService {
 
     public void deleteRuleName(Integer id) {
         if(!ruleNameRepository.existsById(id)) {
-            LOG.error("Could not find rule name with id: " + id);
+            LOG.error("Delete Rulename failed");
             throw new RuntimeException("Could not find curve point with id: " + id);
         }
         ruleNameRepository.deleteById(id);
