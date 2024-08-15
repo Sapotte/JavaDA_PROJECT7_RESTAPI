@@ -3,6 +3,8 @@ package com.nnk.springboot.services;
 import com.nnk.springboot.domain.BidList;
 import com.nnk.springboot.repositories.BidListRepository;
 import com.nnk.springboot.utils.RegexValidation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +14,8 @@ import java.util.NoSuchElementException;
 
 @Service
 public class BidService {
+    private final static Logger LOG = LoggerFactory.getLogger(BidService.class);
+
     @Autowired
     RegexValidation validation;
 
@@ -23,12 +27,13 @@ public class BidService {
         return bidListRepository.findAll();
     }
 
-    public BidList addBid(BidList bid) {
+    public void addBid(BidList bid) {
         try {
             bid.setCreationDate(Instant.now());
             bidListRepository.save(bid);
-            return bid;
+            LOG.info("Bid added");
         } catch (Exception e) {
+            LOG.error(e.getMessage());
             throw new IllegalArgumentException("Error saving bid: " + e.getMessage());
         }
     }
@@ -41,7 +46,9 @@ public class BidService {
         try {
             bidList.setRevisionDate(Instant.now());
             bidListRepository.update(id, bidList.getAccount(), bidList.getType(), bidList.getBidQuantity());
+            LOG.info("Bid updated : " + id);
         } catch (Exception e) {
+            LOG.error(e.getMessage());
             throw new IllegalArgumentException("Error saving bid: " + e.getMessage());
         }
     }
@@ -50,7 +57,9 @@ public class BidService {
         bidListRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Bid not found"));
         try {
             bidListRepository.deleteById(id);
+            LOG.info("Bid deleted : " + id);
         } catch (Exception e) {
+            LOG.error(e.getMessage());
             throw new IllegalArgumentException("Error deleting bid: " + e.getMessage());
         }
     }

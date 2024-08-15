@@ -9,6 +9,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -19,6 +20,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.validation.BeanPropertyBindingResult;
+import org.springframework.validation.BindingResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +31,7 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
+@SpringBootTest
 class BidListControllerTest {
     @InjectMocks
     BidListController bidListController;
@@ -64,24 +68,30 @@ class BidListControllerTest {
 
     @Test
     void validateSuccess() throws Exception {
-        BidList newBid = new BidList("accountNew", "typeNew", 10.0);
-        when(bidService.addBid(any())).thenReturn(newBid);
-        mockMvc.perform(MockMvcRequestBuilders.post("/bidList/validate")
-                        .flashAttr("bidList", newBid))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.view().name("bidList/list"));
+        BidList validBid = new BidList("Account1", "Type1", 20.0);
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/bidList/validate")
+                        .flashAttr("bidList", validBid)
+        )
+                .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
+                .andExpect(MockMvcResultMatchers.redirectedUrl("/bidList/list"));
         verify(bidService, Mockito.times(1)).addBid(any());
     }
 
     @Test
-    void validateFailure() throws Exception {
-        BidList invalidBid = new BidList("", "", null);
-        when(bidService.addBid(any())).thenThrow(InvalidDataAccessApiUsageException.class);
+    void validateFailureWithValidationErrors() throws Exception {
+        BidList bidList = new BidList("", "", null);
+
+        BindingResult bindingResult = new BeanPropertyBindingResult(bidList, "bidList");
+        bindingResult.rejectValue("account", "error.account", "This field is required");
+        bindingResult.rejectValue("type", "error.type", "This field is required");
+
         mockMvc.perform(MockMvcRequestBuilders.post("/bidList/validate")
-                        .flashAttr("bidList", invalidBid))
+                        .flashAttr("org.springframework.validation.BindingResult.bidList", bindingResult)
+                        .flashAttr("bidList", bidList))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.view().name("bidList/add?errorDB"));
-        verify(bidService, Mockito.times(1)).addBid(any());
+                .andExpect(MockMvcResultMatchers.view().name("bidList/add"));
+        verify(bidService, Mockito.times(0)).addBid(any());
     }
 
     @Test
@@ -107,6 +117,7 @@ class BidListControllerTest {
     void updateBidSuccess() throws Exception {
         BidList updatedBid = new BidList("accountUpdated", "typeUpdated", 30.0);
         doNothing().when(bidService).updateBid(anyInt(), any());
+
         mockMvc.perform(MockMvcRequestBuilders.post("/bidList/update/1")
                 .flashAttr("bidList", updatedBid))
                 .andExpect(MockMvcResultMatchers.status().is3xxRedirection())

@@ -30,15 +30,7 @@ public class RuleNameControllerTest {
     private RuleNameController ruleNameController;
 
     @Mock
-    RuleNameRepository ruleNameRepository;
-
-    @Mock
     RuleNameService ruleNameService;
-    // new Mockito mocks to bind and validate the RuleName object
-    @Mock
-    RuleName ruleNameMock;
-    @Mock
-    BindingResult bindingResultMock;
 
     @Test
     void testHome() {
@@ -98,7 +90,7 @@ public class RuleNameControllerTest {
         String viewName = ruleNameController.validate(ruleName, result, new BindingAwareModelMap());
 
         // Assert
-        assertEquals("ruleName/list", viewName);
+        assertEquals("redirect:/ruleName/list", viewName);
     }
 
     @Test

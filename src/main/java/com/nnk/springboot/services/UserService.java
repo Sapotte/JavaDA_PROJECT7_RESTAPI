@@ -2,12 +2,16 @@ package com.nnk.springboot.services;
 
 import com.nnk.springboot.domain.User;
 import com.nnk.springboot.repositories.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
+    private static final Logger LOG = LoggerFactory.getLogger(UserService.class);
+
     @Autowired
     private UserRepository userRepository;
 
@@ -20,11 +24,13 @@ public class UserService {
     public void addUser(User user) {
         User existingUser = userRepository.findByUsername(user.getUsername()).orElse(null);
         if (existingUser != null) {
+            LOG.error("Username already exists");
             throw new IllegalArgumentException("Username already exists");
         }
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         user.setPassword(encoder.encode(user.getPassword()));
         userRepository.save(user);
+        LOG.info("User saved");
     }
 
     /**
@@ -47,5 +53,6 @@ public class UserService {
         }
         user.setId(id);
         userRepository.save(user);
+        LOG.info("User updated");
     }
 }

@@ -14,7 +14,7 @@ import java.util.List;
 
 @Service
 public class TradeService {
-    private Logger logger = LogManager.getLogger(TradeService.class);
+    private static final Logger LOG = LogManager.getLogger(TradeService.class);
     @Autowired
     TradeRepository tradeRepository;
 
@@ -32,15 +32,19 @@ public class TradeService {
 
     public void updateTrade(Integer id, String account, String type, Double buyQuantity) {
         if(!tradeRepository.existsById(id)) {
+            LOG.error("Could not find trade with id: " + id);
             throw new RuntimeException("Could not find trade with id: " + id);
         }
         tradeRepository.updateTrade(id, account, type, buyQuantity, Instant.now());
+        LOG.info("Updated trade with id: " + id);
     }
 
     public void deleteTrade(Integer id) {
         if(!tradeRepository.existsById(id)) {
+            LOG.error("Could not find trade with id: " + id);
             throw new RuntimeException("Could not find trade with id: " + id);
         }
         tradeRepository.deleteById(id);
+        LOG.info("Deleted trade with id: " + id);
     }
 }

@@ -55,17 +55,15 @@ public class BidListController {
      *
      * @param bid The validated bid object to be added.
      * @param result The BindingResult object to store validation errors.
-     * @param model The Model object to add attributes for the view.
      * @return The view name to be rendered based on the validation result.
      */
     @PostMapping("/bidList/validate")
-    public String validate(@Valid BidList bid, BindingResult result, Model model) {
+    public String validate(@Valid BidList bid, BindingResult result) {
         if (result.hasErrors()) {
             return "bidList/add";
         }
         try {
-            var newBid = bidService.addBid(bid);
-            model.addAttribute("newBid", newBid);
+            bidService.addBid(bid);
             return "redirect:/bidList/list";
         } catch (Exception e) {
             logger.error(e);

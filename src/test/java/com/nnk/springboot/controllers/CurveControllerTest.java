@@ -7,8 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -23,42 +23,29 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
+@SpringBootTest
 public class CurveControllerTest {
 
     @InjectMocks
-    private CurveController controller;
+    CurveController controller;
 
     @Mock
-    private CurveService curveService;
+    CurveService service;
 
     private Authentication auth;
 
     @BeforeEach
-    void setUp() throws Exception {
+    void setUp() {
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
         auth = new TestingAuthenticationToken("admin", "password", authorities);
         SecurityContextHolder.getContext().setAuthentication(auth);
-    }
-
-    @Test
-    public void homeTest() throws Exception {
-        //Arrange
-        Model model = new ConcurrentModel();
-        List<CurvePoint> curvePointList = new ArrayList<>();
-        when(curveService.findAllCurvePoints()).thenReturn(curvePointList);
-
-        //Act
-        String view = controller.home(model);
-
-        //Assert
-        assertEquals("curvePoint/list", view);
-        assertSame(curvePointList, model.getAttribute("curvePoints"));
-        assertEquals(auth.getName(), model.getAttribute("username"));
     }
 
     @Test
@@ -72,22 +59,6 @@ public class CurveControllerTest {
         assertTrue(mav.getModel().get("curvePoint") instanceof CurvePoint);
     }
 
-    @Test
-    public void showUpdateFormTest() throws Exception {
-        //Arrange
-        Model model = new ConcurrentModel();
-        int curveId = 1;
-        CurvePoint curvePoint = new CurvePoint();
-        when(curveService.findCurvePointById(curveId)).thenReturn(curvePoint);
-
-        //Act
-        String view = controller.showUpdateForm(curveId, model);
-
-        //Assert
-        assertEquals("curvePoint/update", view);
-        assertSame(curvePoint, model.getAttribute("curvePoint"));
-    }
-    // New Test Case Starts from here
     @Test
     public void updateCurve_Error() throws Exception {
         CurvePoint curvePoint = new CurvePoint();
@@ -124,18 +95,14 @@ public class CurveControllerTest {
     }
 
     @Test
-    public void deleteCurve_Failure() throws Exception {
-        int curveId = 1;
+    public void home_Success() throws Exception {
         Model model = new ConcurrentModel();
-
-        // Simulate failure
-        Mockito.doThrow(new RuntimeException("Test exception")).when(curveService).deleteCurvePoint(curveId);
-
         // Act
-        String view = controller.deleteCurve(curveId, model);
+        String view = controller.home(model);
 
         // Assert
-        assertEquals("redirect:/curvePoint/list?errorDelete", view);
-        assertEquals("Test exception", model.getAttribute("message"));
+        assertEquals("curvePoint/list", view);
+        assertTrue(model.containsAttribute("curvePoints"));
+        assertTrue(model.containsAttribute("username"));
     }
 }

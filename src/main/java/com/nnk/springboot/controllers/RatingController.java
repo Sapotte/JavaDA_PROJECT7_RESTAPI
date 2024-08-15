@@ -6,6 +6,7 @@ import com.nnk.springboot.services.CurveService;
 import com.nnk.springboot.services.RatingService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -20,15 +21,11 @@ import jakarta.validation.Valid;
 public class RatingController {
     private static Logger logger = LogManager.getLogger(RatingController.class);
 
-    private final RatingRepository ratingRepository;
-    private final RatingService ratingService;
-    private final CurveService curveService;
+    @Autowired
+    private RatingRepository ratingRepository;
 
-    public RatingController(RatingRepository ratingRepository, RatingService ratingService, CurveService curveService) {
-        this.ratingRepository = ratingRepository;
-        this.ratingService = ratingService;
-        this.curveService = curveService;
-    }
+    @Autowired
+    private RatingService ratingService;
 
     @RequestMapping("/rating/list")
     public String home(Model model)
