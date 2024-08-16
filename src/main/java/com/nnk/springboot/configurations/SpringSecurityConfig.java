@@ -1,7 +1,6 @@
 package com.nnk.springboot.configurations;
 
 import com.nnk.springboot.services.CustomUserDetailsService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,14 +18,26 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SpringSecurityConfig extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {
 
-    @Autowired
-    private CustomUserDetailsService usersService;
+    private final CustomUserDetailsService usersService;
+
+    public SpringSecurityConfig(CustomUserDetailsService usersService) {
+        this.usersService = usersService;
+    }
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+
+    /**
+     * Returns a SecurityFilterChain for the given HttpSecurity configuration.
+     * Authentication required for all requests + admin role for requests about users
+     *
+     * @param http the HttpSecurity configuration to build the SecurityFilterChain from
+     * @return the SecurityFilterChain for the given HttpSecurity configuration
+     * @throws Exception if an error occurs while building the SecurityFilterChain
+     */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
@@ -43,6 +54,14 @@ public class SpringSecurityConfig extends SecurityConfigurerAdapter<DefaultSecur
         return http.build();
     }
 
+    /**
+     * Creates and returns an AuthenticationManager for the given HttpSecurity configuration.
+     *
+     * @param http the HttpSecurity configuration from which to obtain the shared AuthenticationManagerBuilder
+     * @param bCryptPasswordEncoder the BCryptPasswordEncoder to use for password encoding
+     * @return the created AuthenticationManager
+     * @throws Exception if an error occurs while building the AuthenticationManager
+     */
     @Bean
     public AuthenticationManager authenticationManager(HttpSecurity http, BCryptPasswordEncoder bCryptPasswordEncoder) throws Exception {
         AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
@@ -50,6 +69,11 @@ public class SpringSecurityConfig extends SecurityConfigurerAdapter<DefaultSecur
         return authenticationManagerBuilder.build();
     }
 
+    /**
+     * Returns a ServletContextInitializer that sets the session timeout at 10 minutes for the servlet context.
+     *
+     * @return the ServletContextInitializer that sets the session timeout
+     */
     @Bean
     public ServletContextInitializer initializer() {
         return servletContext -> servletContext.setSessionTimeout(10);

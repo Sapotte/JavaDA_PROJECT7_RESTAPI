@@ -44,4 +44,6 @@ public class TradeService {
         tradeRepository.deleteById(id);
         LOG.info("Deleted trade with id: " + id);
     }
+
+
 }

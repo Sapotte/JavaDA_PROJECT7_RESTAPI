@@ -12,8 +12,11 @@ public class RatingService {
 
     private static final Logger LOG = LoggerFactory.getLogger(RatingService.class);
 
-    @Autowired
-    RatingRepository ratingRepository;
+    private final RatingRepository ratingRepository;
+
+    public RatingService(RatingRepository ratingRepository) {
+        this.ratingRepository = ratingRepository;
+    }
 
     public Rating createRating(Rating rating) {
         return ratingRepository.save(rating);
@@ -22,7 +25,7 @@ public class RatingService {
     public void updateRating(Integer id, String moodysRating, String sandPRating, String fitchRating, Integer orderNumber) {
         if(!ratingRepository.existsById(id)) {
             LOG.error("Update rating failed");
-            throw new RuntimeException("Could not find rating with id: " + id);
+            throw new NullPointerException("Could not find rating with id: " + id);
         }
         ratingRepository.updateRating(id, moodysRating, sandPRating, fitchRating, orderNumber);
         LOG.info("Rating with id " + id + " has been updated");

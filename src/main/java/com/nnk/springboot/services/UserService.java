@@ -2,6 +2,7 @@ package com.nnk.springboot.services;
 
 import com.nnk.springboot.domain.User;
 import com.nnk.springboot.repositories.UserRepository;
+import org.hibernate.annotations.NotFound;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +13,11 @@ import org.springframework.stereotype.Service;
 public class UserService {
     private static final Logger LOG = LoggerFactory.getLogger(UserService.class);
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     /**
      * Adds a new user to the user repository.
@@ -44,8 +48,8 @@ public class UserService {
      * @throws IllegalArgumentException if the user id is invalid
      */
     public void updateUser(User user, int id) {
-        User oldUser = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
-        if(user.getPassword().isBlank() || user.getPassword() == null) {
+        User oldUser = userRepository.findById(id).orElseThrow(() -> new NullPointerException("Invalid user Id:" + id));
+        if(user.getPassword() == null || user.getPassword().isBlank()) {
             user.setPassword(oldUser.getPassword());
         } else {
             BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();

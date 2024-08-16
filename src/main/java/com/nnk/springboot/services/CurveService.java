@@ -4,7 +4,6 @@ import com.nnk.springboot.domain.CurvePoint;
 import com.nnk.springboot.repositories.CurvePointRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,8 +12,11 @@ import java.util.List;
 public class CurveService {
     private static final Logger LOG = LoggerFactory.getLogger(CurveService.class);
 
-    @Autowired
-    CurvePointRepository curvePointRepository;
+    private final CurvePointRepository curvePointRepository;
+
+    public CurveService(CurvePointRepository curvePointRepository) {
+        this.curvePointRepository = curvePointRepository;
+    }
 
     public List<CurvePoint> findAllCurvePoints() {
         return curvePointRepository.findAll();

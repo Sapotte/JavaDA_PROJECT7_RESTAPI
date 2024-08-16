@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest
@@ -33,7 +34,7 @@ public class CurveControllerTest {
     CurveController controller;
 
     @Mock
-    CurveService service;
+    CurveService curveService;
 
     private Authentication auth;
 
@@ -102,4 +103,37 @@ public class CurveControllerTest {
         assertTrue(model.containsAttribute("curvePoints"));
         assertTrue(model.containsAttribute("username"));
     }
+@Test
+public void validate_Error() throws Exception {
+    CurvePoint curvePoint = new CurvePoint();
+    curvePoint.setTerm(2.5);
+    curvePoint.setValue(3.7);
+    BindingResult result = new BeanPropertyBindingResult(curvePoint, "curvePoint");
+    result.reject("error", "Test error message");
+
+    String view = controller.validate(curvePoint, result, new ConcurrentModel());
+
+    assertEquals("curvePoint/add", view);
+}
+
+@Test
+public void validate_Success() throws Exception {
+    CurvePoint curvePoint = new CurvePoint();
+    curvePoint.setTerm(2.5);
+    curvePoint.setValue(3.7);
+    BindingResult result = new BeanPropertyBindingResult(curvePoint, "curvePoint");
+
+    String view = controller.validate(curvePoint, result, new ConcurrentModel());
+
+    assertEquals("redirect:/curvePoint/list", view);
+}
+
+@Test
+public void showUpdateForm_Success(){
+    Model model = new ConcurrentModel();
+
+    String view = controller.showUpdateForm(1, model);
+
+    assertEquals("curvePoint/update", view);
+}
 }

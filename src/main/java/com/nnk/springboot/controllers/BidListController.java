@@ -5,7 +5,6 @@ import com.nnk.springboot.services.BidService;
 import jakarta.validation.Valid;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -20,8 +19,12 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class BidListController {
     private static Logger logger = LogManager.getLogger(BidListController.class);
-    @Autowired
-    BidService bidService;
+
+    private final BidService bidService;
+
+    public BidListController(BidService bidService) {
+        this.bidService = bidService;
+    }
 
     /**
      * Retrieves the home page view for the bid list.

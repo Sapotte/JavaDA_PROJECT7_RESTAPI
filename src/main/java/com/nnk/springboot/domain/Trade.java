@@ -2,6 +2,8 @@ package com.nnk.springboot.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.Instant;
 
@@ -13,9 +15,11 @@ public class Trade {
     @Column(name = "tradeId", nullable = false)
     private int tradeId;
 
+    @NotBlank
     @Column(name = "account", nullable = false, length = 30)
     private String account;
 
+    @NotBlank
     @Column(name = "type", nullable = false, length = 30)
     private String type;
 

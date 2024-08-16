@@ -18,8 +18,12 @@ import jakarta.validation.Valid;
 
 @Controller
 public class TradeController {
-    @Autowired
-    TradeService tradeService;
+
+    private final TradeService tradeService;
+
+    public TradeController(TradeService tradeService) {
+        this.tradeService = tradeService;
+    }
 
     @RequestMapping("/trade/list")
     public String home(Model model){
@@ -41,7 +45,7 @@ public class TradeController {
     }
 
     @PostMapping("/trade/validate")
-    public String validate(@Valid Trade trade, BindingResult result, Model model) {
+    public String validate(@Valid Trade trade, BindingResult result) {
         if(result.hasErrors()) {
             return "trade/add";
         }

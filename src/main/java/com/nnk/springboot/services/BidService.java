@@ -5,7 +5,6 @@ import com.nnk.springboot.repositories.BidListRepository;
 import com.nnk.springboot.utils.RegexValidation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -16,11 +15,11 @@ import java.util.NoSuchElementException;
 public class BidService {
     private final static Logger LOG = LoggerFactory.getLogger(BidService.class);
 
-    @Autowired
-    RegexValidation validation;
+    private final BidListRepository bidListRepository;
 
-    @Autowired
-    BidListRepository bidListRepository;
+    public BidService(RegexValidation validation, BidListRepository bidListRepository) {
+        this.bidListRepository = bidListRepository;
+    }
 
 
     public List<BidList> getBidLists(){

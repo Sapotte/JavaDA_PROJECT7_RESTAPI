@@ -25,10 +25,10 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@SpringBootTest
 @ExtendWith(MockitoExtension.class)
 public class RatingControllerTest {
     @InjectMocks
@@ -97,4 +97,42 @@ public void home() throws Exception {
          .andExpect(model().attribute("message", "Rating not found"))
          .andExpect(view().name("rating/list"));
    }
+
+    @Test
+    public void updateRating_Failure() throws Exception {
+        doThrow(NullPointerException.class).when(ratingService).updateRating(any(), any(), any(), any(), any());
+        mockMvc.perform(MockMvcRequestBuilders.post("/rating/update/1")
+                        .param("moodysRating", "MoodysRating")
+                        .param("sandPRating", "SandPRating")
+                        .param("fitchRating", "FitchRating")
+                        .param("orderNumber", "1"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("rating/update/{id}?error"));
+    }
+
+    @Test
+    public void updateRating_Success() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post("/rating/update/1")
+                        .param("moodysRating", "MoodysRating")
+                        .param("sandPRating", "SandPRating")
+                        .param("fitchRating", "FitchRating")
+                        .param("orderNumber", "1"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/rating/list"));
+    }
+    @Test
+    public void deleteRating_Success() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/rating/delete/1"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(MockMvcResultMatchers.redirectedUrl("/rating/list"));
+    }
+
+    @Test
+    public void deleteRating_Failure() throws Exception {
+        doThrow(RuntimeException.class).when(ratingService).deleteRating(any());
+        mockMvc.perform(MockMvcRequestBuilders.get("/rating/delete/1"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(MockMvcResultMatchers.redirectedUrl("/rating/list?errorDelete"));
+    }
 }
+

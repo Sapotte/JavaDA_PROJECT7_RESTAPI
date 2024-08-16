@@ -9,7 +9,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -23,6 +22,7 @@ import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -30,13 +30,12 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-@SpringBootTest
 class BidListControllerTest {
-    @InjectMocks
-    BidListController bidListController;
-
     @Mock
     BidService bidService;
+
+    @InjectMocks
+    BidListController bidListController;
 
     private MockMvc mockMvc;
 
@@ -51,10 +50,14 @@ class BidListControllerTest {
 
     @Test
     void home() throws Exception {
+        List<BidList> bidLists = Arrays.asList(
+                new BidList("account1", "type1", 1.0),
+                new BidList("account2", "type2", 2.0));
+        when(bidService.getBidLists()).thenReturn(bidLists);
         mockMvc.perform(MockMvcRequestBuilders.get("/bidList/list"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.view().name("bidList/list"));
-        verify(bidService, Mockito.times(1)).getBidLists();
+                .andExpect(MockMvcResultMatchers.view().name("bidList/list"))
+                .andExpect(MockMvcResultMatchers.model().attribute("bidLists", bidLists));
     }
 
     @Test

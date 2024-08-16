@@ -19,11 +19,14 @@ import org.springframework.web.servlet.ModelAndView;
 public class RatingController {
     private static Logger logger = LogManager.getLogger(RatingController.class);
 
-    @Autowired
-    private RatingRepository ratingRepository;
+    private final RatingRepository ratingRepository;
 
-    @Autowired
-    private RatingService ratingService;
+    private final RatingService ratingService;
+
+    public RatingController(RatingRepository ratingRepository, RatingService ratingService) {
+        this.ratingRepository = ratingRepository;
+        this.ratingService = ratingService;
+    }
 
     @RequestMapping("/rating/list")
     public String home(Model model)

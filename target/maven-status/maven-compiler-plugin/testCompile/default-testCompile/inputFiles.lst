@@ -5,8 +5,16 @@ C:\Users\sarah\DepotGit\JavaDA_PROJECT7_RESTAPI\Poseiden-skeleton\src\test\java\
 C:\Users\sarah\DepotGit\JavaDA_PROJECT7_RESTAPI\Poseiden-skeleton\src\test\java\com\nnk\springboot\controllers\RatingControllerTest.java
 C:\Users\sarah\DepotGit\JavaDA_PROJECT7_RESTAPI\Poseiden-skeleton\src\test\java\com\nnk\springboot\controllers\RuleNameControllerTest.java
 C:\Users\sarah\DepotGit\JavaDA_PROJECT7_RESTAPI\Poseiden-skeleton\src\test\java\com\nnk\springboot\controllers\TradeControllerTest.java
+C:\Users\sarah\DepotGit\JavaDA_PROJECT7_RESTAPI\Poseiden-skeleton\src\test\java\com\nnk\springboot\controllers\UserControllerTest.java
 C:\Users\sarah\DepotGit\JavaDA_PROJECT7_RESTAPI\Poseiden-skeleton\src\test\java\com\nnk\springboot\CurvePointTests.java
 C:\Users\sarah\DepotGit\JavaDA_PROJECT7_RESTAPI\Poseiden-skeleton\src\test\java\com\nnk\springboot\PasswordEncodeTest.java
 C:\Users\sarah\DepotGit\JavaDA_PROJECT7_RESTAPI\Poseiden-skeleton\src\test\java\com\nnk\springboot\RatingTests.java
 C:\Users\sarah\DepotGit\JavaDA_PROJECT7_RESTAPI\Poseiden-skeleton\src\test\java\com\nnk\springboot\RuleTests.java
+C:\Users\sarah\DepotGit\JavaDA_PROJECT7_RESTAPI\Poseiden-skeleton\src\test\java\com\nnk\springboot\services\BidServiceTest.java
+C:\Users\sarah\DepotGit\JavaDA_PROJECT7_RESTAPI\Poseiden-skeleton\src\test\java\com\nnk\springboot\services\CurveServiceTest.java
+C:\Users\sarah\DepotGit\JavaDA_PROJECT7_RESTAPI\Poseiden-skeleton\src\test\java\com\nnk\springboot\services\CustomUserDetailsServiceTest.java
+C:\Users\sarah\DepotGit\JavaDA_PROJECT7_RESTAPI\Poseiden-skeleton\src\test\java\com\nnk\springboot\services\RatingServiceTest.java
+C:\Users\sarah\DepotGit\JavaDA_PROJECT7_RESTAPI\Poseiden-skeleton\src\test\java\com\nnk\springboot\services\RuleNameServiceTest.java
+C:\Users\sarah\DepotGit\JavaDA_PROJECT7_RESTAPI\Poseiden-skeleton\src\test\java\com\nnk\springboot\services\TradeServiceTest.java
+C:\Users\sarah\DepotGit\JavaDA_PROJECT7_RESTAPI\Poseiden-skeleton\src\test\java\com\nnk\springboot\services\UserServiceTest.java
 C:\Users\sarah\DepotGit\JavaDA_PROJECT7_RESTAPI\Poseiden-skeleton\src\test\java\com\nnk\springboot\TradeTests.java

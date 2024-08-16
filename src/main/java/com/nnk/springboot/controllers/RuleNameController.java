@@ -18,8 +18,12 @@ import jakarta.validation.Valid;
 @Controller
 public class RuleNameController {
     private static final Logger logger = LogManager.getLogger(RuleNameController.class);
-    @Autowired
-    private RuleNameService ruleNameService;
+
+    private final RuleNameService ruleNameService;
+
+    public RuleNameController(RuleNameService ruleNameService) {
+        this.ruleNameService = ruleNameService;
+    }
 
     @RequestMapping("/ruleName/list")
     public String home(Model model)
