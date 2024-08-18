@@ -47,7 +47,7 @@ public class CurveControllerTest {
     }
 
     @Test
-    public void addCurvePointFormTest() throws Exception {
+    public void addCurvePointFormTest()  {
         //Act
         ModelAndView mav = controller.addCurvePointForm();
 
@@ -58,7 +58,7 @@ public class CurveControllerTest {
     }
 
     @Test
-    public void updateCurve_Error() throws Exception {
+    public void updateCurve_Error() {
         CurvePoint curvePoint = new CurvePoint();
         curvePoint.setTerm(2.5);
         curvePoint.setValue(3.7);
@@ -71,7 +71,7 @@ public class CurveControllerTest {
     }
 
    @Test
-   public void updateCurve_Success() throws Exception {
+   public void updateCurve_Success() {
        CurvePoint curvePoint = new CurvePoint();
        curvePoint.setTerm(2.5);
        curvePoint.setValue(3.7);
@@ -82,7 +82,7 @@ public class CurveControllerTest {
        assertEquals("redirect:/curvePoint/list", view);
    }
     @Test
-    public void deleteCurve_Success() throws Exception {
+    public void deleteCurve_Success()  {
         int curveId = 1;
 
         // Act
@@ -93,18 +93,18 @@ public class CurveControllerTest {
     }
 
     @Test
-    public void home_Success() throws Exception {
+    public void home_Success() {
         Model model = new ConcurrentModel();
         // Act
-        String view = controller.home(model);
+        ModelAndView view = controller.home(model);
 
         // Assert
-        assertEquals("curvePoint/list", view);
-        assertTrue(model.containsAttribute("curvePoints"));
-        assertTrue(model.containsAttribute("username"));
+        assertEquals("curvePoint/list", view.getViewName());
+        assertTrue(view.getModel().containsKey("curvePoints"));
+        assertTrue(view.getModel().containsKey("username"));
     }
 @Test
-public void validate_Error() throws Exception {
+public void validate_Error() {
     CurvePoint curvePoint = new CurvePoint();
     curvePoint.setTerm(2.5);
     curvePoint.setValue(3.7);
@@ -117,7 +117,7 @@ public void validate_Error() throws Exception {
 }
 
 @Test
-public void validate_Success() throws Exception {
+public void validate_Success()  {
     CurvePoint curvePoint = new CurvePoint();
     curvePoint.setTerm(2.5);
     curvePoint.setValue(3.7);
@@ -132,8 +132,8 @@ public void validate_Success() throws Exception {
 public void showUpdateForm_Success(){
     Model model = new ConcurrentModel();
 
-    String view = controller.showUpdateForm(1, model);
+    ModelAndView mav = controller.showUpdateForm(1, model);
 
-    assertEquals("curvePoint/update", view);
+    assertEquals("curvePoint/update", mav.getViewName());
 }
 }

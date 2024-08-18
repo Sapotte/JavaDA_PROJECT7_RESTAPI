@@ -62,7 +62,7 @@ public class UserControllerTest {
 
         mockMvc.perform(get("/user/list"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/list"))
+                .andExpect(view().name("user/list"))
                 .andExpect(model().attributeExists("users"))
                 .andExpect(model().attribute("users", users));
     }
@@ -84,8 +84,8 @@ public class UserControllerTest {
 
         mockMvc.perform(post("/user/validate")
                         .flashAttr("user", user))
-                .andExpect(status().isOk())
-                .andExpect(view().name("/user/list"));
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/user/list"));
     }
     @Test
     public void validate_testWithInvalidUser() throws Exception {
@@ -123,8 +123,10 @@ public class UserControllerTest {
     @Test
     public void updateUser_validUserTest() throws Exception {
         User user = new User();
+        user.setFullname("Full");
         user.setUsername("TestName");
-        user.setPassword("TestPassword1");
+        user.setPassword("TestPassword1!");
+        user.setRole("ROLE_ADMIN");
 
         mockMvc.perform(post("/user/update/1")
                         .flashAttr("user", user))
@@ -136,15 +138,11 @@ public class UserControllerTest {
     @Test
     public void updateUser_invalidUserTest() throws Exception {
         User user = new User();
-        user.setUsername("TestName");
-        user.setPassword("TestPassword1");
-        user.setId(1);
-        doThrow(IllegalArgumentException.class).when(userService).updateUser(user, 1);
 
         mockMvc.perform(post("/user/update/1")
                         .flashAttr("user", user))
                 .andExpect(status().isOk())
-                .andExpect(view().name("user/update?error"));
+                .andExpect(view().name("user/update"));
     }
 
     // Test deleteUser method for a valid user ID.

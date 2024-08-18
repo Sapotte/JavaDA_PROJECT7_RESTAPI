@@ -7,7 +7,6 @@ import com.nnk.springboot.utils.RegexValidation;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -33,7 +32,7 @@ public class UserController {
     public ModelAndView home()
     {
         ModelAndView mav = new ModelAndView();
-        mav.setViewName("/list");
+        mav.setViewName("user/list");
         mav.addObject("users", userRepository.findAll());
         return mav;
     }
@@ -77,22 +76,23 @@ public class UserController {
                 return "user/add?error";
             }
         }
-        return "/user/list";
+        return "redirect:/user/list";
     }
 
     @GetMapping("/update/{id}")
-    public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
+    public ModelAndView showUpdateForm(@PathVariable("id") Integer id) {
+        ModelAndView mav = new ModelAndView("user/update");
         User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
-        model.addAttribute("user", user);
-        return "user/update";
+        mav.addObject("user", user);
+        return mav;
     }
 
     @PostMapping("/update/{id}")
     public String updateUser(@PathVariable("id") Integer id, @Valid User user,
                              BindingResult result, Model model) {
-        if(!user.getPassword().trim().isBlank()) {
+        if(user.getPassword() != null && !user.getPassword().trim().isBlank()) {
             RegexValidation.addErrorIfPasswordNotValid(result, user.getPassword());
-        } else
+        }
         if (result.hasErrors()) {
             return "user/update";
         }

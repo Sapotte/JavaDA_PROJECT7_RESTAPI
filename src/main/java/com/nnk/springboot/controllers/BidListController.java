@@ -45,8 +45,10 @@ public class BidListController {
     }
 
     @GetMapping("/bidList/add")
-    public String addBidForm(BidList bid) {
-        return "bidList/add";
+    public ModelAndView addBidForm() {
+        ModelAndView mav = new ModelAndView("bidList/add");
+        mav.addObject("bidList", new BidList());
+        return mav;
     }
 
     /**
@@ -91,23 +93,21 @@ public class BidListController {
      * @param id The ID of the bid list to be updated.
      * @param bidList The validated bid list object to be updated.
      * @param result The BindingResult object to store validation errors.
-     * @param model The Model object to add attributes for the view.
      * @return The view name to be rendered based on the result of the bid list update.
      */
     @PostMapping("/bidList/update/{id}")
     public String updateBid(@PathVariable("id") Integer id, @Valid BidList bidList,
-                             BindingResult result, Model model) {
+                             BindingResult result) {
         if (result.hasErrors()) {
             return "bidList/update";
         }
         try {
             bidService.updateBid(id, bidList);
+            return "redirect:/bidList/list";
         } catch (Exception e) {
             logger.error(e.getMessage());
             return "bidList/update?errorDB";
         }
-        model.addAttribute("bidList", bidService.getBidLists());
-        return "redirect:/bidList/list";
     }
 
     /**

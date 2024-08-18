@@ -26,19 +26,19 @@ public class CurveController {
 
 
     @RequestMapping("/curvePoint/list")
-    public String home(Model model)
+    public ModelAndView home(Model model)
     {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
+        ModelAndView mav = new ModelAndView("curvePoint/list");
         try {
             var curvePointList = curveService.findAllCurvePoints();
-            model.addAttribute("curvePoints", curvePointList);
-            model.addAttribute("username", auth.getName());
-            return "curvePoint/list";
+            mav.addObject("curvePoints", curvePointList);
+            mav.addObject("username", auth.getName());
+            return mav;
         } catch (Exception e) {
             logger.error(e);
-            model.addAttribute("message", "An error occurred while retrieving the curve points");
-            return "curvePoint/list?error";
+            mav.addObject("message", "An error occurred while retrieving the curve points");
+            return mav;
         }
     }
 
@@ -66,15 +66,16 @@ public class CurveController {
     }
 
     @GetMapping("/curvePoint/update/{id}")
-    public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
+    public ModelAndView showUpdateForm(@PathVariable("id") Integer id, Model model) {
+        ModelAndView mav = new ModelAndView("curvePoint/update");
             var curvePoint = curveService.findCurvePointById(id);
             try {
-                model.addAttribute("curvePoint", curvePoint);
-                return "curvePoint/update";
+                mav.addObject("curvePoint", curvePoint);
+                return mav;
             } catch (Exception e) {
                 logger.error(e.getMessage());
-                model.addAttribute("message", e.getMessage());
-                return "curvePoint/list?errorUpdate";
+                mav.addObject("message", e.getMessage());
+                return mav;
         }
     }
 

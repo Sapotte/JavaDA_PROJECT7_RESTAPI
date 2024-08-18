@@ -36,7 +36,7 @@ public class SpringSecurityConfig extends SecurityConfigurerAdapter<DefaultSecur
      *
      * @param http the HttpSecurity configuration to build the SecurityFilterChain from
      * @return the SecurityFilterChain for the given HttpSecurity configuration
-     * @throws Exception if an error occurs while building the SecurityFilterChain
+     * @ if an error occurs while building the SecurityFilterChain
      */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -60,7 +60,7 @@ public class SpringSecurityConfig extends SecurityConfigurerAdapter<DefaultSecur
      * @param http the HttpSecurity configuration from which to obtain the shared AuthenticationManagerBuilder
      * @param bCryptPasswordEncoder the BCryptPasswordEncoder to use for password encoding
      * @return the created AuthenticationManager
-     * @throws Exception if an error occurs while building the AuthenticationManager
+     * @ if an error occurs while building the AuthenticationManager
      */
     @Bean
     public AuthenticationManager authenticationManager(HttpSecurity http, BCryptPasswordEncoder bCryptPasswordEncoder) throws Exception {

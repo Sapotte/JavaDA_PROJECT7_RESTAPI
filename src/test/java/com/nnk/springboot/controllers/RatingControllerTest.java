@@ -77,7 +77,7 @@ public void home() throws Exception {
    }
 
    @Test
-   public void showUpdateForm_ValidId() throws Exception{
+   public void showUpdateForm_ValidId() throws Exception {
      Rating testRating = new Rating();
      testRating.setId(1);
      when(ratingRepository.findById(1)).thenReturn(Optional.of(testRating));

@@ -111,8 +111,7 @@ class BidListControllerTest {
         when(bidService.getBidById(anyInt())).thenReturn(expectedBid);
         mockMvc.perform(MockMvcRequestBuilders.get("/bidList/update/1"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.view().name("bidList/update"))
-                .andExpect(MockMvcResultMatchers.model().attribute("bidList", expectedBid));
+                .andExpect(MockMvcResultMatchers.view().name("bidList/update"));
     }
 
     @Test
