@@ -2,10 +2,8 @@ package com.nnk.springboot.services;
 
 import com.nnk.springboot.domain.User;
 import com.nnk.springboot.repositories.UserRepository;
-import org.hibernate.annotations.NotFound;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -49,13 +47,13 @@ public class UserService {
      */
     public void updateUser(User user, int id) {
         User oldUser = userRepository.findById(id).orElseThrow(() -> new NullPointerException("Invalid user Id:" + id));
-        if(user.getPassword() == null || user.getPassword().isBlank()) {
-            user.setPassword(oldUser.getPassword());
-        } else {
+        if(user.getPassword() != null && !user.getPassword().isBlank()) {
             BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-            user.setPassword(encoder.encode(user.getPassword()));
+            oldUser.setPassword(encoder.encode(user.getPassword()));
         }
-        user.setId(id);
+        oldUser.setFullname(user.getFullname());
+        oldUser.setUsername(user.getUsername());
+        oldUser.setRole(user.getRole());
         userRepository.save(user);
         LOG.info("User updated");
     }

@@ -2,6 +2,7 @@ package com.nnk.springboot.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 
 @Entity
 @Table(name = "users")
@@ -16,6 +17,7 @@ public class User {
     private String password;
 
     @NotBlank(message = "FullName is mandatory")
+    @Pattern(regexp = "^[A-Z][a-z]+$", message = "Not a valid name, must be only alpha characters and begin with a capital letter")
     private String fullname;
 
     @NotBlank(message = "Role is mandatory")
